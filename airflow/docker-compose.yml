@@ -1,0 +1,17 @@
+services:
+  airflow:
+    build: .
+    command: standalone
+    ports:
+      - "8080:8080"
+    environment:
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_ALL_ADMINS: "true"
+      AIRFLOW__DAG_PROCESSOR__REFRESH_INTERVAL: "30"
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - /var/run/docker.sock:/var/run/docker.sock
+    # Linux uniquement : donner accès au socket Docker (GID affiché par
+    # `stat -c %g /var/run/docker.sock`).
+    # group_add:
+    #   - "984"
